@@ -1,5 +1,10 @@
 Vagrant.configure('2') do |config|
-    numberOfNodes=1
+    numberOfNodes=2
+
+    kubelets = Array.new(numberOfNodes)
+    (1..numberOfNodes).each do |id|
+        kubelets[id - 1] = "kube#{id}"
+    end
 
     config.vm.box = "centos/7"
     config.vm.network "private_network", type: "dhcp"
@@ -18,6 +23,9 @@ Vagrant.configure('2') do |config|
       server.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
       server.vm.provision "chef_solo" do |chef|
         chef.add_recipe "base"
+        chef.json = {
+            "kubelets": kubelets
+        }
       end
     end
 

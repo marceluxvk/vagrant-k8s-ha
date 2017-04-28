@@ -14,6 +14,14 @@ service 'etcd' do
   action [:enable, :start]
 end
 
+template '/etc/haproxy/haproxy.cfg' do
+  source 'haproxy.cfg.rb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
 script 'etcd_configuration' do
   interpreter 'bash'
   code <<-EOF
@@ -25,3 +33,8 @@ script 'etcd_configuration' do
   action :run
   not_if {::File.exist?('/usr/local/etcd.ok')}
 end
+
+service 'haproxy' do
+  action [:enable, :restart]
+end
+
