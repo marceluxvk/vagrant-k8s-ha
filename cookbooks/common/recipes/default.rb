@@ -22,6 +22,10 @@ package ['nss-mdns', 'net-tools', 'docker'] do
   action :install
 end
 
+service 'avahi-daemon' do
+  action [:enable, :restart]
+end
+
 cookbook_file '/etc/docker/daemon.json' do
   source 'docker_daemon.json'
   mode '0664'
