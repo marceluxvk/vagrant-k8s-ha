@@ -27,7 +27,7 @@ script 'etcd_configuration' do
   code <<-EOF
     docker run -d -p 5000:5000 --restart always registry:2
     etcdctl mkdir /kubecluster/network
-    etcdctl mk /kubecluster/network/config \"{ \\\"Network\\\": \\\"172.30.0.0/16\\\", \\\"SubnetLen\\\": 24, \\\"Backend\\\": { \\\"Type\\\": \\\"vxlan\\\" } }"
+    etcdctl mk /kubecluster/network/config "{\"Network\": \"172.30.0.0/16\", \"SubnetLen\": 24, \"Backend\": { \"Type\": \"vxlan\"}}"
     touch /usr/local/etcd.ok
     EOF
   action :run

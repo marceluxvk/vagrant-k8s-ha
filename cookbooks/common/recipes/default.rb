@@ -2,6 +2,23 @@ link '/etc/localtime' do
   to '/usr/share/zoneinfo/America/Sao_Paulo'
 end
 
+cookbook_file '/etc/selinux/config' do
+  source 'selinux'
+  owner 'root'
+  group 'root'
+  mode '0644  '
+  action :create
+end
+
+execute 'setenfore' do
+  command 'setenforce 0'
+  action :run
+end
+
+service 'firewalld' do
+  action [:disable, :stop]
+end
+
 package 'epel-release' do
   action :install
 end
