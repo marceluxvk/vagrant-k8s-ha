@@ -177,8 +177,18 @@ curl http://kube1.local:30100
 curl http://kube2.local:30100
 ```
 Both commands must return the http request.
-After this point your are ready to run your own tests.
 
+
+To list the events on the cluster:
+```shell
+kubectl get events
+```
+
+From here, your are ready to execute your own tests.
+
+# Examples #
+
+Exemples of implementation will be added on the "example" directory of this project soon.
 
 ## Link ##
 > [Workload Resources](https://kubernetes.io/docs/resources-reference/v1.5/)
