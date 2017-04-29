@@ -21,7 +21,18 @@ The base node simulates everything else needed to support a production ready and
 
 ### ETCD Configuration ###
 
-The etcd server is running as a single instance because it's not the main target of this test but their site have very useful informations to help you run it in a multi-instance mode.
+The etcd server is running as a single instance once it's not the main target of this test. To find out more information about alternatives cluster configuration and behaviours, please visiti [etcd cluster website](https://github.com/coreos/etcd/blob/master/Documentation/op-guide/clustering.md)
+
+### HAProxy ###
+Inside the Base node I installed a HAProxy that works as a LoadBalancer. The main idea about it is to have a single entry point for the ***kubernetes-apiserver***.
+
+## Clustering ##
+
+To create a kube HA Cluster you must keep in mind that all **kube-apiserver** requests must by handled by the balancer, that will redirect the request to some available apiserver node.
+
+Basically, after the cluster and the apiserver configuration the following components must be reconfigured to the balancer:
+- [kube-controller-manager](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/controller-manager)
+- [kube-scheduler](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/scheduler)
 
 The main point to guarantee the high availability is to have multiple instances of **kube-apiserver**, **kube-controller-manager** and **kube-scheduler**.
 The **kube-apiserver** must be exposed and used behind a load balancer, implemented on this test using the haproxy. Everything else, must be configured to invoke the **kube-apiserver** through the load balancer. So we have:
