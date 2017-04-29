@@ -80,6 +80,6 @@ backend static
 backend app
     balance     roundrobin
     <% @node['kubelets'].each do |id| %>
-    server  <%="#{id}"%>.local:8080 check
+    server  <%="#{id}"%> <%="#{id}"%>.local:8080 check
 <% end %>
 
