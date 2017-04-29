@@ -19,7 +19,7 @@ Vagrant.configure('2') do |config|
     end
     
     config.vm.define 'base' do |server|
-      server.vm.hostname = "base.local"
+      server.vm.hostname = "base"
       server.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
       server.vm.provision "chef_solo" do |chef|
         chef.add_recipe "base"
@@ -31,8 +31,11 @@ Vagrant.configure('2') do |config|
 
     (1..numberOfNodes).each do |host|
         config.vm.define "kube#{host}" do |server|
-            server.vm.hostname = "kube#{host}.local"
+            server.vm.hostname = "kube#{host}"
             server.vm.synced_folder '.', '/vagrant', type: 'virtualbox'
+            server.vm.provision "chef_solo" do |chef|
+                chef.add_recipe 'kubernetes'
+            end
         end
     end
 end
