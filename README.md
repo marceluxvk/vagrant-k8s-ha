@@ -24,23 +24,28 @@ The base node simulates everything else needed to support a production ready and
 The etcd server is running as a single instance once it's not the main target of this test. To find out more information about alternatives cluster configuration and behaviours, please visiti [etcd cluster website](https://github.com/coreos/etcd/blob/master/Documentation/op-guide/clustering.md)
 
 ### HAProxy ###
-Inside the Base node I installed a HAProxy that works as a LoadBalancer. The main idea about it is to have a single entry point for the ***kubernetes-apiserver***.
+Inside the Base node I installed a HAProxy that works as a LoadBalancer. With this design we have a single entry point for all instances of ***kubernetes-apiserver***.
 
 ## Clustering ##
 
 To create a kube HA Cluster you must keep in mind that all **kube-apiserver** requests must by handled by the balancer, that will redirect the request to some available apiserver node.
 
-Basically, after the cluster and the apiserver configuration the following components must be reconfigured to the balancer:
+![teste](https://kubernetes.io/images/docs/ha.svg)
+
+### Configuring the balancer to the kubernetes components ###
+
+Basically, after the cluster and the apiserver configuration the following components must be reconfigured to the balancer insted some specific instance of kube-apiserver:
+
+[/etc/kubernetes/config](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/kube_config)
+
+### Enabling the leader election ###
+
+To enable the leader election the parameter ```--leader-elect``` must be added to the following configuration files:
+
 - [kube-controller-manager](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/controller-manager)
 - [kube-scheduler](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/scheduler)
 
-The main point to guarantee the high availability is to have multiple instances of **kube-apiserver**, **kube-controller-manager** and **kube-scheduler**.
-The **kube-apiserver** must be exposed and used behind a load balancer, implemented on this test using the haproxy. Everything else, must be configured to invoke the **kube-apiserver** through the load balancer. So we have:
-![teste](https://kubernetes.io/images/docs/ha.svg)
-
-To make things work as a cluster, we need to enable the flag ```--leader-elect``` at the configuration file for the [scheduler](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/scheduler) and the [controller manager](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/controller-manager). 
-
-So, if everything is ok, your high available kubernetes cluster is ready to use.
+So, if everything is ok, the high available kubernetes cluster is ready to use.
 
 
 ## Usage ##
