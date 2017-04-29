@@ -15,10 +15,11 @@ There are 3 interesting tutorials on the vendors sites:
 
 The etcd server is running as a single instance because it's not the main target of this test but their site have very useful informations to help you run it in a multi-instance mode.
 
-So, every request we send to kubernates will be balanced between the available nodes to be redirect to one of the availables kube-apiservers.
+The main point to guarantee the high availability is to have multiple instances of **kube-apiserver**, **kube-controller-manager** and **kube-scheduler**.
+The **kube-apiserver** must be exposed and used behind a load balancer, implemented on this test using the haproxy. Everything else, must be configured to invoke the **kube-apiserver** through the load balancer. So we have:
 ![teste](https://kubernetes.io/images/docs/ha.svg)
 
-To make things work as a cluster, we need to enable the flag ```--leader-elect``` at the configuration file for the [scheduler](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/scheduler) and the [controller manager](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/controller-manager). Everything else, must configure the apiservice address using the balancer address **http://base.local:8080** and not the apiservice address directly.
+To make things work as a cluster, we need to enable the flag ```--leader-elect``` at the configuration file for the [scheduler](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/scheduler) and the [controller manager](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/controller-manager). 
 
 So, if everything is ok, your high available kubernetes cluster is ready to use.
 
@@ -77,12 +78,12 @@ sudo systemctl start haproxy
 
 ## Testing your installation ##
 
-### You must access one of the kube nodes ###
+Accessing the node 1
 ```
 vagrant ssh kube1
 ```
 
-Listing the kubernetes nodes you have:
+Listing the kubernetes nodes:
 
 ```shell
 [vagrant@kube1 ~]$ kubectl get nodes
@@ -91,7 +92,7 @@ kube1.local   Ready     1h
 kube2.local   Ready     1h
 ```
 
-Listing everything you have on your cluster:
+Listing everything on your cluster:
 ```shell
 [vagrant@kube1 ~]$ kubectl get all
 NAME             CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
@@ -121,7 +122,7 @@ rs/nginx-deploy-1447934386   1         1         1         14s
 NAME                               READY     STATUS    RESTARTS   AGE
 po/nginx-deploy-1447934386-t8lrx   1/1       Running   0          23s
 ```
-Create your first service:
+Creating first service:
 ```shell
 [vagrant@kube1 ~]$ kubectl create -f /vagrant/examples/service.yaml
 service "nginx-service" created
