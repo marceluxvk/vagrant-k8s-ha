@@ -50,9 +50,11 @@ So, if everything is ok, the high available kubernetes cluster is ready to use.
 
 ## Usage ##
 
-Firt of all you have to clone this repository and install the vagrant and the virtual box.
+Firt of all, you have to clone this repository and install the vagrant and virtual box.
 
 ### Basic Vagrant Commands ###
+
+Some tips about vagrant. To find out more visit [here](https://www.vagrantup.com/docs/cli/)
 
 Initialize instances:
 ```shell
@@ -90,7 +92,7 @@ vagrant status
 
 There's a issue I have not fixed yet that is the automatically start of the haproxy, so, you need to start it manually.
 
-Access the BASE instance
+Go the BASE instance
 ```shell
 vagrant ssh base
 ```
@@ -146,7 +148,7 @@ rs/nginx-deploy-1447934386   1         1         1         14s
 NAME                               READY     STATUS    RESTARTS   AGE
 po/nginx-deploy-1447934386-t8lrx   1/1       Running   0          23s
 ```
-Creating first service:
+Creating the first service:
 ```shell
 [vagrant@kube1 ~]$ kubectl create -f /vagrant/examples/service.yaml
 service "nginx-service" created
@@ -167,7 +169,7 @@ Endpoints:              172.30.36.2:80
 Session Affinity:       None
 No events.
 ```
-At this point you can see that there's only one instance of service running as endpoint
+As you can see, there's only one instance of the pod. To add more, just scale!
 
 Testing the kubeproxy:
 ```shell
