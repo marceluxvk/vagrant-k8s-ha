@@ -87,3 +87,21 @@ The hostname is: example1-deployment-995804533-7cpjc
 
 ``` 
 You can see that the request are being balanced through all nodes and instances of services we have.
+
+## Removing ##
+To clean up this mess just run
+
+```shell
+kubectl delete -f deploy.yaml
+kubectl delete -f service.yaml
+```
+
+And then
+
+```shell
+vagrant@kube1 example1-nodeid]$ kubectl get all
+NAME             CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+svc/kubernetes   10.254.0.1   <none>        443/TCP   1d
+```
+
+All done.
