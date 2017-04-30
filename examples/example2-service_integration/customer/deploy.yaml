@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: example2-customer-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: example2-customer
+    spec:
+      containers:
+      - name: example2-customer
+        image: base.local:5000/example2-customer:1.0.0
+        ports:
+        - containerPort: 7100

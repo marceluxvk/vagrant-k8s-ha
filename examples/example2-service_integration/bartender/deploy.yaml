@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: example2-bartender-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: example2-bartender
+    spec:
+      containers:
+      - name: example2-bartender
+        image: base.local:5000/example2-bartender:1.0.0
+        ports:
+        - containerPort: 7000

@@ -6,7 +6,12 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
+)
+
+var (
+	service string
 )
 
 type Item struct {
@@ -15,8 +20,16 @@ type Item struct {
 	Price float32 `json:"price"`
 }
 
+func init() {
+	service = os.Getenv("EXAMPLE2_BARTENDER_SERVICE_SERVICE_HOST") + ":" + os.Getenv("EXAMPLE2_BARTENDER_SERVICE_SERVICE_PORT")
+
+	if service == ":" {
+		service = "localhost:7000"
+	}
+}
+
 func AskForBeer(w http.ResponseWriter, r *http.Request) {
-	resp, err := http.Get("http://localhost:7000/menu")
+	resp, err := http.Get("http://" + service + "/menu")
 	log.Println("Menu received")
 	if err != nil {
 		w.Write([]byte(err.Error()))
@@ -37,7 +50,7 @@ func AskForBeer(w http.ResponseWriter, r *http.Request) {
 			drink := drinks[rand.Intn(len(drinks))]
 
 			log.Println("Ordering")
-			resp, _ = http.Get("http://localhost:7000/order?id=" + strconv.Itoa(drink.ID))
+			resp, _ = http.Get("http://" + service + "/order?id=" + strconv.Itoa(drink.ID))
 			buf, _ = ioutil.ReadAll(resp.Body)
 
 			w.Write(buf)
