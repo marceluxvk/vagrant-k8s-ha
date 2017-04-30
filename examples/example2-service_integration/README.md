@@ -3,21 +3,21 @@
 This example shows the interaction between 2 components using a RESTFUL(Not so full) API.
 Basically the client application(customer) access the server app(bartender) through a service by using the vip address the it's specific port.
 
-So, when the client app invokes the server app the vip that handles request to the service redirects the request for one of the available instances.
+So, when the client app invokes the server app the vip handles the request and redirects the it to one of the available instances.
 
-The basic tutorial used to implement this is is available [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
+The basic tutorial used to implement this test is available [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
 
 ### Roles ###
 
-> Customer - Order a drink to the bartender and show to everybody!
+> Customer - Orders a drink to the bartender and shows to everybody!
 
-> Bartender - Provides the drinks menu and prepare the drinks
+> Bartender - Provides the drinks menu and prepares the drinks.
 
 Why? I'm drinking now...
 
 ## Getting ready ##
 
-Installing your environment from the base node:
+Installing your environment at the base node:
 
 ```shell
 $ cd /vagrant/examples/example2-service_integration/
@@ -35,11 +35,12 @@ $ kubectl get pods -o wide
 ```
 
 And you will see the number of instances of bartenders you have
+
 ```shell
 NAME                                             READY     STATUS    RESTARTS   AGE       IP            NODE
 example2-bartender-deployment-3738030372-jcb96   1/1       Running   0          1d        172.30.14.2   kube1.local
 ```
-No we need to create the service
+Now we need to create the service
 
 ```shell
 $ kubectl create -f bartender/service.yaml
@@ -145,13 +146,13 @@ I love caipirinha!
 
 ## What did it do? ##
 
-On the [custumer](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/examples/example2-service_integration/customer/src/main.go) file you can see at the init method that the application get 2 environment variables
+On the [custumer](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/examples/example2-service_integration/customer/src/main.go) file you can see at the init method that the application gets 2 environment variables
 
 > EXAMPLE2_BARTENDER_SERVICE_SERVICE_HOST: Variable that has the ip address of the service
 
 > EXAMPLE2_BARTENDER_SERVICE_SERVICE_PORT: Variable that has the port value for the bartender service
 
-Here is the pice of code you need to understand:
+Here is the piece of code you need understand:
 ```golang
 
 func init() {
@@ -159,7 +160,7 @@ func init() {
 }
 ```
 
-So, let's check the value of these variables on your container:
+So, let's check the value of these variables on a running container:
 
 ```shell
 $ kubectl get pods -o wide
@@ -168,7 +169,7 @@ example2-bartender-deployment-3738030372-jcb96   1/1       Running   0          
 example2-customer-deployment-3853176918-2wjc2    1/1       Running   0          1d        172.30.36.2   kube2.local
 ```
 
-I can see that the customer pod is running on the kube2.local, so i can go there and check.
+I can see that the customer pod is running on the kube2.local, so I can go there and check the environment variables.
 
 ```shell
 $ docker exec -it <your container id> bash
@@ -185,8 +186,6 @@ EXAMPLE2_BARTENDER_SERVICE_SERVICE_PORT=7000
 ...
 ...
 ```
-
-So you can see the content of the variables now.
 
 Let's check the service info on kubernetes
 
@@ -205,5 +204,5 @@ Session Affinity:       None
 No events.
 ``` 
 
-So, now is clear that the client application(customer) is configured to send the requests to the service by uing it's specific ip and port. All request will be balanced through all instances of app we have.
+Now it's clear for us that the client application(customer) is configured to send the requests to the service by using the service's ip and port. All request will be balanced through the available instances of application.
 
