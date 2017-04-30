@@ -1,4 +1,4 @@
-package ['etcd', 'haproxy'] do
+package ['etcd', 'haproxy', 'golang'] do
   action :install
 end
 
