@@ -101,8 +101,6 @@ svc/kubernetes   10.254.0.1   <none>        443/TCP   1h
 
 Creating the first basic deployment:
 ```shell
-[vagrant@kube1 ~]$ kubectl create -f /vagrant/examples/
-deploy.yaml   service.yaml
 [vagrant@kube1 ~]$ kubectl create -f /vagrant/examples/deploy.yaml
 deployment "nginx-deploy" created
 ```
