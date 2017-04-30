@@ -86,4 +86,4 @@ The hostname is: example1-deployment-995804533-p47lh
 The hostname is: example1-deployment-995804533-7cpjc
 
 ``` 
-You can see that the request are been balanced through all nodes and instances of services we have.
+You can see that the request are being balanced through all nodes and instances of services we have.
