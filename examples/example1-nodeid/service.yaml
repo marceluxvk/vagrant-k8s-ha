@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: example1-service
+spec:
+  type: NodePort 
+  selector:
+    app: example1
+  ports:
+    - port:  7000
+      targetPort: 7000
+      nodePort: 30200
+      protocol: TCP

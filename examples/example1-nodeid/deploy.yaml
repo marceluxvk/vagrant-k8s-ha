@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: example1-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: example1
+    spec:
+      containers:
+      - name: example1
+        image: base.local:5000/example1:1.0.0
+        ports:
+        - containerPort: 7000
