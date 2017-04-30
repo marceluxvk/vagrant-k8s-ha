@@ -1,4 +1,4 @@
-# Kubernetes High Availability Enabled Environment #
+# Kubernetes High Availability Enabled Environment + Tests #
 
 This test aims to enable everybody to start and test the kubernates high available cluster environment.
 All configuration are available to guarantee the well understanding about how to configure and enable a kubernates cluster.
