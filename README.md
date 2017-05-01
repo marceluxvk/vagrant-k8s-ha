@@ -186,7 +186,7 @@ From here, your are ready to execute your own tests.
 
 # Examples #
 
-Exemples of implementation will be added on the "example" directory of this project soon.
+Exemples of implementation will be added on the ["examples" directory](https://github.com/marceluxvk/vagrant-k8s-ha/tree/master/examples).
 
 ## Link ##
 > [Workload Resources](https://kubernetes.io/docs/resources-reference/v1.5/)
