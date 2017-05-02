@@ -1,11 +1,11 @@
 # Example 2 #
 
 This example shows the interaction between 2 components using a RESTFUL(Not so full) API.
-Basically the client application(customer) access the server app(bartender) through a service by using the vip address the it's specific port.
+Basically the client application(customer) access the server app(bartender) through a service by using the service vip address on it's specific port.
 
 So, when the client app invokes the server app the vip handles the request and redirects the it to one of the available instances.
 
-The basic tutorial used to implement this test is available [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
+The basic tutorial used to implement this test is available [here](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/). The image below come from there too.
 
 ### Roles ###
 
@@ -13,11 +13,9 @@ The basic tutorial used to implement this test is available [here](https://kuber
 
 > Bartender - Provides the drinks menu and prepares the drinks.
 
-Why? I'm drinking now...
-
 ## Getting ready ##
 
-Installing your environment at the base node:
+To install this test go to the base node and then run:
 
 ```shell
 $ cd /vagrant/examples/example2-service_integration/
@@ -26,7 +24,9 @@ $ ./install.sh
 
 ## Installing the Bartender ##
 
-Execute the installation of the deployment and the service from a kube node
+From here you drive from the one of the kube nodes.
+
+Execute the installation of the deployment and the service.
 
 ```shell
 $ cd /vagrant/examples/example2-service_integration/
@@ -34,7 +34,7 @@ $ kubectl create -f bartender/deploy.yaml
 $ kubectl get pods -o wide
 ```
 
-And you will see the number of instances of bartenders you have
+And you will see the number of bartender instances you have
 
 ```shell
 NAME                                             READY     STATUS    RESTARTS   AGE       IP            NODE
@@ -47,7 +47,7 @@ $ kubectl create -f bartender/service.yaml
 service "example2-bartender-service" created
 ```
 
-Take a look on the service installation and pay atention on the IP it shows, it's important to the next steps:
+Take a look on the service installation and pay atention on the IP it shows, it's important for the next steps:
 
 ```shell
 $ kubectl describe service example2-bartender-service
@@ -95,11 +95,11 @@ $ curl http://kube1.local:30210/menu|python -m json.tool
 ]
 
 ```
-The service is ok, it's the standard response.
+The service is ok, it's the standard response. A list of drinks.
 
 ## Installing the Customer ##
 
-Basically we need to execute the same steps but to the customer application... 
+Basically, what we need now is execute the same steps but to the customer application... 
 
 ```shell
 $ cd /vagrant/examples/example2-service_integration/
@@ -142,17 +142,17 @@ $ curl http://kube1.local:30220|python -m json.tool
     "price": 10
 }
 ```
-I love caipirinha!
+Caipirinha is cool!
 
 ## What did it do? ##
 
-On the [custumer](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/examples/example2-service_integration/customer/src/main.go) file you can see at the init method that the application gets 2 environment variables
+On the [custumer](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/examples/example2-service_integration/customer/src/main.go) code you can see at the init method that the application gets 2 environment variables:
 
-> EXAMPLE2_BARTENDER_SERVICE_SERVICE_HOST: Variable that has the ip address of the service
+> EXAMPLE2_BARTENDER_SERVICE_SERVICE_HOST: Variable that has the ip address of the service(the VIP).
 
-> EXAMPLE2_BARTENDER_SERVICE_SERVICE_PORT: Variable that has the port value for the bartender service
+> EXAMPLE2_BARTENDER_SERVICE_SERVICE_PORT: Variable that has the port address to the bartender service
 
-Here is the piece of code you need understand:
+This is the piece of code you need understand:
 ```golang
 
 func init() {
@@ -170,6 +170,7 @@ example2-customer-deployment-3853176918-2wjc2    1/1       Running   0          
 ```
 
 I can see that the customer pod is running on the kube2.local, so I can go there and check the environment variables.
+On your test it might be running in a different node, we don't worry about it.
 
 ```shell
 $ docker exec -it <your container id> bash
@@ -204,5 +205,5 @@ Session Affinity:       None
 No events.
 ``` 
 
-Now it's clear for us that the client application(customer) is configured to send the requests to the service by using the service's ip and port. All request will be balanced through the available instances of application.
+Now it's clear for us that the client application(customer) is configured to send the requests to the service by using the service's ip(VIP) and port. All request will be balanced through the available instances of application.
 
