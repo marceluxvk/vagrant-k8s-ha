@@ -5,7 +5,7 @@ All configuration are available to guarantee the well understanding about how to
 Application and funcional tests are available on the ["examples" directory](https://github.com/marceluxvk/vagrant-k8s-ha/tree/master/examples).
 
 ## About the tools ##
-The hosts are provisioned using [vagrant](https://docs.docker.com/) and [virtual box](https://www.virtualbox.org/wiki/Downloads), so if you wanna try this module you must install theses both tools.
+The hosts are provisioned using [vagrant](https://docs.docker.com/) and [virtual box](https://www.virtualbox.org/wiki/Downloads), so if you wanna try this module you must install both theses tools.
 
 You can modify the virtualization platform by changing the [Vagrantfile](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/Vagrantfile) according [this](https://www.vagrantup.com/docs/providers/) documentation.
 
@@ -22,7 +22,7 @@ The base node simulates everything else needed to support a production ready and
 
 ### ETCD Configuration ###
 
-The etcd server is running as a single instance once it's not the main target of this test. To find out more information about alternatives cluster configuration and behaviours, please visiti [etcd cluster website](https://github.com/coreos/etcd/blob/master/Documentation/op-guide/clustering.md)
+The etcd server is running as a single instance once it's not the main target of this test. To find out more information about alternative cluster configuration and behaviours, please visit [etcd cluster website](https://github.com/coreos/etcd/blob/master/Documentation/op-guide/clustering.md)
 
 ### HAProxy ###
 Inside the Base node I installed a HAProxy that works as a LoadBalancer. With this design we have a single entry point for all instances of ***kubernetes-apiserver***.
@@ -35,7 +35,7 @@ To create a kube HA Cluster you must keep in mind that all **kube-apiserver** re
 
 ### Configuring the balancer to the kubernetes components ###
 
-Basically, after the cluster and the apiserver configuration the following components must be reconfigured to the balancer insted some specific instance of kube-apiserver:
+Basically, after the cluster and the apiserver configuration the following components must be reconfigured to the balancer instead some specific instance of kube-apiserver:
 
 [/etc/kubernetes/config](https://github.com/marceluxvk/vagrant-k8s-ha/blob/master/cookbooks/kubernetes/files/kube_config)
 
@@ -51,7 +51,7 @@ So, if everything is ok, the high available kubernetes cluster is ready to use.
 
 ## Usage ##
 
-Firt of all, you have to clone this repository and install the vagrant and virtual box.
+First of all, you have to clone this repository and install the vagrant and virtual box.
 
 ### Basic Vagrant Commands ###
 
