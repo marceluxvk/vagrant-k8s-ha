@@ -39,6 +39,14 @@ package ['nss-mdns', 'net-tools', 'docker'] do
   action :install
 end
 
+cookbook_file '/etc/avahi/avahi-daemon.conf' do
+  source 'avahi-daemon.conf'
+  owner 'root'
+  group 'root'
+  mode '0644  '
+  action :create
+end
+
 service 'avahi-daemon' do
   action [:enable, :restart]
 end
